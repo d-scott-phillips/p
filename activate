@@ -1,0 +1,20 @@
+cd $(dirname $0)
+eval $(./bin/python3 - <<EOF
+import os
+vars = set([])
+def add(var, val):
+  vars.add(var)
+  val = os.path.join(*val)
+  vs = [v for v in os.environ.get(var, '').split(':') if v not in ['', val]]
+  os.environ[var] = ':'.join([val] + vs)
+home = os.environ['HOME']
+add('PATH', (home, 'p', 'bin'))
+add('LD_LIBRARY_PATH', (home, 'p', 'lib'))
+add('PKG_CONFIG_PATH', (home, 'p', 'lib', 'pkgconfig'))
+add('PKG_CONFIG_PATH', (home, 'p', 'share', 'pkgconfig'))
+add('ACLOCAL_PATH', (os.path.sep, 'usr', 'share', 'aclocal'))
+add('ACLOCAL_PATH', (os.path.sep, 'usr', 'local', 'share', 'aclocal'))
+add('ACLOCAL_PATH', (home, 'share', 'aclocal'))
+for v in vars: print('export %s=%s' % (v, os.environ[v]))
+EOF
+)
