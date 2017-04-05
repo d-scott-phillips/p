@@ -1,5 +1,4 @@
-cd $(dirname $0)
-eval $(./bin/python3 - <<EOF
+eval $(${BASH_SOURCE[0]}/bin/python3 - 2>/dev/null || python3 - <<EOF
 import os
 vars = set([])
 def add(var, val):
@@ -14,7 +13,10 @@ add('PKG_CONFIG_PATH', (home, 'p', 'lib', 'pkgconfig'))
 add('PKG_CONFIG_PATH', (home, 'p', 'share', 'pkgconfig'))
 add('ACLOCAL_PATH', (os.path.sep, 'usr', 'share', 'aclocal'))
 add('ACLOCAL_PATH', (os.path.sep, 'usr', 'local', 'share', 'aclocal'))
-add('ACLOCAL_PATH', (home, 'share', 'aclocal'))
+add('ACLOCAL_PATH', (home, 'p', 'share', 'aclocal'))
+add('GI_TYPELIB_PATH', (home, 'p', 'lib', 'girepository-1.0'))
+if 'XDG_DATA_DIRS' not in os.environ: os.environ['XDG_DATA_DIRS'] = '/usr/local/share/:/usr/share/'
+add('XDG_DATA_DIRS', (home, 'p', 'share'))
 for v in vars: print('export %s=%s' % (v, os.environ[v]))
 EOF
 )

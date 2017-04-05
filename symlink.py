@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 import os, sys
 dir = os.path.dirname(os.path.realpath(sys.argv[0]))
 torm = [e for e in os.scandir(dir)
