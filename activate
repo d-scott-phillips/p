@@ -1,4 +1,4 @@
-eval $(${BASH_SOURCE[0]}/bin/python3 - 2>/dev/null || python3 - <<EOF
+eval $( ( $(dirname ${BASH_SOURCE[0]})/bin/python3 - 2>/dev/null || python3 - ) <<EOF
 import os
 vars = set([])
 def add(var, val):
